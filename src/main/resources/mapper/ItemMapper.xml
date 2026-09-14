@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xqk.campusfind.mapper.ItemMapper">
+
+    <select id="selectItemWithUserByStatus" resultType="com.xqk.campusfind.entity.Item">
+        SELECT
+            i.*,
+            u1.username AS publisherName,
+            u2.username AS claimerName
+        FROM item i
+                 LEFT JOIN user u1 ON i.user_id = u1.id
+                 LEFT JOIN claim c ON i.id = c.item_id AND c.status = 0
+                 LEFT JOIN user u2 ON c.user_id = u2.id
+        WHERE i.status = #{status}
+        ORDER BY i.id DESC
+    </select>
+
+    <select id="selectPublicItemList" resultType="com.xqk.campusfind.entity.Item">
+        SELECT
+            i.*,
+            u1.username AS publisherName,
+            u2.username AS claimerName
+        FROM item i
+                 LEFT JOIN user u1 ON i.user_id = u1.id
+                 LEFT JOIN claim c ON i.id = c.item_id AND c.status = 0
+                 LEFT JOIN user u2 ON c.user_id = u2.id
+        WHERE i.status IN (1, 2)
+        ORDER BY i.id DESC
+    </select>
+
+</mapper>

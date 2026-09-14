@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xqk.campusfind.mapper.ClaimMapper">
+
+    <select id="selectClaimWithDetails" resultType="com.xqk.campusfind.entity.Claim">
+        SELECT
+            c.*,
+            i.name AS itemName,
+            u.username AS username
+        FROM claim c
+                 LEFT JOIN item i ON c.item_id = i.id
+                 LEFT JOIN user u ON c.user_id = u.id
+        ORDER BY c.id DESC
+    </select>
+
+    <select id="selectMyClaimsWithDetails" resultType="com.xqk.campusfind.entity.Claim">
+        SELECT
+            c.*,
+            i.name AS itemName
+        FROM claim c
+                 LEFT JOIN item i ON c.item_id = i.id
+        WHERE c.user_id = #{userId}
+        ORDER BY c.id DESC
+    </select>
+
+</mapper>
